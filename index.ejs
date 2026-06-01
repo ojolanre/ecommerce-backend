@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Verdant Cart - Thoughtful Everyday Goods</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--bg-sand: #f6f2e8;
+			--bg-cream: #fffdf8;
+			--ink: #1e2a21;
+			--ink-soft: #43554a;
+			--forest: #1f5a40;
+			--moss: #7da287;
+			--clay: #be6a49;
+			--sun: #f1bb62;
+			--card: #ffffffcc;
+			--line: #d9d1bf;
+			--radius-lg: 24px;
+			--radius-md: 16px;
+			--shadow: 0 24px 40px -26px rgba(31, 40, 35, 0.45);
+			--hero-gradient: radial-gradient(circle at 15% 30%, #f7d7a2 0%, #f6f2e8 36%, #dfe8db 100%);
+		}
+
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			font-family: "Space Grotesk", sans-serif;
+			color: var(--ink);
+			background: linear-gradient(180deg, #f8f3e8, #f4efe4 20%, #f6f2e8 100%);
+			min-height: 100vh;
+			overflow-x: hidden;
+		}
+
+		body::before,
+		body::after {
+			content: "";
+			position: fixed;
+			z-index: -1;
+			border-radius: 999px;
+			filter: blur(4px);
+			opacity: 0.5;
+		}
+
+		body::before {
+			width: 380px;
+			height: 380px;
+			background: #e8d7b7;
+			top: -120px;
+			right: -90px;
+		}
+
+		body::after {
+			width: 280px;
+			height: 280px;
+			background: #d5e3d5;
+			bottom: -70px;
+			left: -80px;
+		}
+
+		.shell {
+			width: min(1160px, 94vw);
+			margin: 0 auto;
+		}
+
+		.topbar {
+			position: sticky;
+			top: 0;
+			z-index: 20;
+			backdrop-filter: blur(10px);
+			background: color-mix(in srgb, var(--bg-cream) 82%, transparent);
+			border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+		}
+
+		.topbar-inner {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 18px 0;
+			gap: 12px;
+		}
+
+		.brand {
+			font-family: "Fraunces", serif;
+			font-size: 1.4rem;
+			letter-spacing: 0.01em;
+			color: var(--forest);
+			font-weight: 700;
+		}
+
+		.nav-links {
+			display: flex;
+			gap: 20px;
+			color: var(--ink-soft);
+			font-size: 0.95rem;
+			font-weight: 500;
+		}
+
+		.nav-links a {
+			color: inherit;
+			text-decoration: none;
+			transition: color 0.2s;
+		}
+
+		.nav-links a:hover {
+			color: var(--forest);
+		}
+
+		.cart-chip {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			border: 1px solid var(--line);
+			border-radius: 999px;
+			padding: 8px 14px;
+			background: #fff;
+			font-weight: 600;
+			color: var(--ink);
+			box-shadow: 0 10px 20px -16px rgba(0, 0, 0, 0.45);
+		}
+
+		.dot {
+			width: 8px;
+			height: 8px;
+			border-radius: 999px;
+			background: var(--forest);
+			box-shadow: 0 0 0 6px color-mix(in srgb, var(--moss) 32%, transparent);
+		}
+
+		.hero {
+			margin-top: 22px;
+			background: var(--hero-gradient);
+			border: 1px solid #e3dac8;
+			border-radius: var(--radius-lg);
+			box-shadow: var(--shadow);
+			padding: clamp(28px, 5vw, 60px);
+			display: grid;
+			grid-template-columns: 1.05fr 0.95fr;
+			align-items: center;
+			gap: 24px;
+			overflow: hidden;
+			position: relative;
+			animation: float-in 0.7s ease-out both;
+		}
+
+		.hero::after {
+			content: "";
+			position: absolute;
+			width: 220px;
+			height: 220px;
+			border-radius: 999px;
+			right: -50px;
+			top: -50px;
+			background: radial-gradient(circle at center, #ffd38d 0%, #ffd38d66 45%, transparent 70%);
+		}
+
+		.kicker {
+			color: var(--clay);
+			text-transform: uppercase;
+			letter-spacing: 0.15em;
+			font-size: 0.73rem;
+			font-weight: 700;
+			margin-bottom: 12px;
+		}
+
+		.hero h1 {
+			font-family: "Fraunces", serif;
+			font-size: clamp(2rem, 5.2vw, 4rem);
+			line-height: 0.95;
+			margin-bottom: 14px;
+			max-width: 18ch;
+			color: #1c3226;
+		}
+
+		.hero p {
+			color: #3d4d43;
+			line-height: 1.6;
+			font-size: clamp(0.98rem, 1.1vw, 1.1rem);
+			max-width: 42ch;
+		}
+
+		.cta-row {
+			margin-top: 20px;
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+		}
+
+		.btn {
+			border: none;
+			border-radius: 999px;
+			padding: 12px 18px;
+			font-family: inherit;
+			font-weight: 700;
+			letter-spacing: 0.02em;
+			cursor: pointer;
+			transition: transform 0.2s, box-shadow 0.2s;
+		}
+
+		.btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 10px 18px -14px rgba(0, 0, 0, 0.6);
+		}
+
+		.btn-primary {
+			background: var(--forest);
+			color: #f6f8f5;
+		}
+
+		.btn-secondary {
+			background: #fff;
+			color: var(--ink);
+			border: 1px solid #d2cab8;
+		}
+
+		.hero-side {
+			display: grid;
+			gap: 14px;
+		}
+
+		.hero-card {
+			border-radius: var(--radius-md);
+			background: var(--card);
+			border: 1px solid #e1d7c5;
+			padding: 16px;
+			box-shadow: 0 12px 28px -24px rgba(0, 0, 0, 0.55);
+			backdrop-filter: blur(5px);
+		}
+
+		.hero-card h3 {
+			font-size: 1rem;
+			margin-bottom: 8px;
+		}
+
+		.hero-card p {
+			color: var(--ink-soft);
+			font-size: 0.95rem;
+		}
+
+		.stats {
+			margin-top: 16px;
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 12px;
+		}
+
+		.stat {
+			border-radius: var(--radius-md);
+			background: #fff;
+			border: 1px solid #e3dac7;
+			padding: 14px;
+			text-align: center;
+		}
+
+		.stat strong {
+			display: block;
+			font-size: 1.2rem;
+			color: var(--forest);
+			margin-bottom: 3px;
+		}
+
+		.section-title {
+			margin: 38px 0 14px;
+			font-family: "Fraunces", serif;
+			font-size: clamp(1.45rem, 2.7vw, 2.2rem);
+			color: #1e2d24;
+		}
+
+		.filters {
+			display: flex;
+			gap: 8px;
+			flex-wrap: wrap;
+			margin-bottom: 18px;
+		}
+
+		.filter-btn {
+			border: 1px solid #d7cfbd;
+			background: #fff;
+			color: #34453a;
+			border-radius: 999px;
+			padding: 8px 14px;
+			font-weight: 600;
+			cursor: pointer;
+		}
+
+		.filter-btn.active {
+			border-color: var(--forest);
+			background: color-mix(in srgb, var(--forest) 13%, #fff);
+			color: #173828;
+		}
+
+		.products {
+			display: grid;
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			gap: 14px;
+			margin-bottom: 26px;
+		}
+
+		.product-card {
+			border-radius: var(--radius-md);
+			border: 1px solid #ded5c3;
+			background: #fffdf9;
+			padding: 14px;
+			display: grid;
+			gap: 10px;
+			box-shadow: 0 16px 28px -26px rgba(0, 0, 0, 0.65);
+			transform: translateY(8px);
+			opacity: 0;
+			animation: rise 0.55s ease-out forwards;
+		}
+
+		.swatch {
+			height: 116px;
+			border-radius: 12px;
+			border: 1px solid #d8cfbe;
+			background: var(--swatch, linear-gradient(125deg, #f7ead2, #e9dbc4));
+		}
+
+		.meta {
+			color: #5f705f;
+			font-size: 0.84rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+		}
+
+		.product-card h3 {
+			font-size: 1rem;
+		}
+
+		.price-row {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 8px;
+		}
+
+		.price {
+			font-weight: 700;
+			color: #1b3528;
+			font-size: 1.05rem;
+		}
+
+		.add-btn {
+			border: none;
+			border-radius: 10px;
+			padding: 8px 10px;
+			background: #e8f0e9;
+			color: #1c513a;
+			font-weight: 700;
+			cursor: pointer;
+		}
+
+		.feature-band {
+			margin: 12px 0 26px;
+			border-radius: var(--radius-lg);
+			border: 1px solid #ddcfb7;
+			background: linear-gradient(110deg, #2f664c, #335645 52%, #a86043 100%);
+			color: #f4f8f2;
+			padding: clamp(18px, 3.2vw, 36px);
+			display: grid;
+			grid-template-columns: 1fr auto;
+			gap: 18px;
+			align-items: center;
+		}
+
+		.feature-band h3 {
+			font-family: "Fraunces", serif;
+			font-size: clamp(1.2rem, 2.8vw, 2rem);
+			margin-bottom: 6px;
+		}
+
+		.feature-band p {
+			max-width: 50ch;
+			color: #f0f1e5;
+			line-height: 1.55;
+		}
+
+		.badge {
+			justify-self: end;
+			border-radius: 999px;
+			border: 1px solid color-mix(in srgb, #fff 55%, transparent);
+			padding: 10px 14px;
+			font-weight: 700;
+			white-space: nowrap;
+		}
+
+		.cart-panel {
+			border-radius: var(--radius-lg);
+			border: 1px solid #ded3bf;
+			background: #fff;
+			padding: 18px;
+			margin-bottom: 32px;
+		}
+
+		.cart-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 10px;
+		}
+
+		.cart-list {
+			list-style: none;
+			display: grid;
+			gap: 8px;
+			margin: 10px 0 14px;
+		}
+
+		.cart-item {
+			display: flex;
+			justify-content: space-between;
+			border: 1px solid #e5dccb;
+			border-radius: 10px;
+			padding: 8px 10px;
+			background: #fffcf7;
+		}
+
+		.empty {
+			color: #6d7b6f;
+			font-size: 0.95rem;
+			padding: 8px 0;
+		}
+
+		.total {
+			font-size: 1.06rem;
+			font-weight: 700;
+			color: #244430;
+		}
+
+		footer {
+			text-align: center;
+			color: #607165;
+			padding: 18px 0 28px;
+			font-size: 0.92rem;
+		}
+
+		@keyframes rise {
+			to {
+				transform: translateY(0);
+				opacity: 1;
+			}
+		}
+
+		@keyframes float-in {
+			from {
+				opacity: 0;
+				transform: translateY(16px) scale(0.99);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0) scale(1);
+			}
+		}
+
+		@media (max-width: 1024px) {
+			.products {
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+			}
+
+			.hero {
+				grid-template-columns: 1fr;
+			}
+		}
+
+		@media (max-width: 780px) {
+			.topbar-inner {
+				flex-wrap: wrap;
+				justify-content: center;
+			}
+
+			.nav-links {
+				width: 100%;
+				justify-content: center;
+			}
+
+			.products {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+
+			.stats {
+				grid-template-columns: 1fr;
+			}
+
+			.feature-band {
+				grid-template-columns: 1fr;
+			}
+
+			.badge {
+				justify-self: start;
+			}
+		}
+
+		@media (max-width: 520px) {
+			.products {
+				grid-template-columns: 1fr;
+			}
+
+			.hero {
+				padding: 24px;
+			}
+
+			.btn {
+				width: 100%;
+			}
+		}
+	</style>
+</head>
+<body>
+	<header class="topbar">
+		<div class="shell topbar-inner">
+			<div class="brand">Verdant Cart</div>
+			<nav class="nav-links" aria-label="Primary navigation">
+				<a href="#shop">Shop</a>
+				<a href="#highlights">Highlights</a>
+				<a href="#cart">Cart</a>
+			</nav>
+			<div class="cart-chip">
+				<span class="dot" aria-hidden="true"></span>
+				<span id="cartCount">0 items</span>
+			</div>
+		</div>
+	</header>
+
+	<main class="shell">
+		<section class="hero" id="highlights">
+			<div>
+				<p class="kicker">Curated essentials</p>
+				<h1>Clean designs for conscious living</h1>
+				<p>Browse everyday products crafted with sustainable materials and low-impact packaging. Built for modern homes, made with planet-first choices.</p>
+				<div class="cta-row">
+					<button class="btn btn-primary" type="button" onclick="scrollToShop()">Shop Collection</button>
+					<button class="btn btn-secondary" type="button">How We Source</button>
+				</div>
+				<div class="stats">
+					<div class="stat">
+						<strong>80%</strong>
+						<span>Recycled packaging</span>
+					</div>
+					<div class="stat">
+						<strong>120+</strong>
+						<span>Ethical vendors</span>
+					</div>
+					<div class="stat">
+						<strong>4.9/5</strong>
+						<span>Customer rating</span>
+					</div>
+				</div>
+			</div>
+			<div class="hero-side">
+				<div class="hero-card">
+					<h3>Low Waste Shipping</h3>
+					<p>Consolidated delivery routes and compostable wraps keep your order light on footprint.</p>
+				</div>
+				<div class="hero-card">
+					<h3>Transparent Materials</h3>
+					<p>Every listing shares sourcing details so you know exactly what goes into your routine.</p>
+				</div>
+			</div>
+		</section>
+
+		<section id="shop" aria-labelledby="shop-heading">
+			<h2 class="section-title" id="shop-heading">Shop by category</h2>
+			<div class="filters" id="filters"></div>
+			<div class="products" id="products"></div>
+		</section>
+
+		<section class="feature-band" aria-label="Value highlight">
+			<div>
+				<h3>Spring Refresh Bundle is live</h3>
+				<p>Pair kitchen essentials, refillable bathroom care, and soft home accents in one discounted set through March 31.</p>
+			</div>
+			<div class="badge">Save up to 25%</div>
+		</section>
+
+		<section class="cart-panel" id="cart" aria-labelledby="cart-heading">
+			<div class="cart-header">
+				<h2 class="section-title" id="cart-heading" style="margin:0; font-size:1.5rem;">Your cart</h2>
+				<span class="total" id="cartTotal">$0.00</span>
+			</div>
+			<p class="empty" id="emptyState">Your cart is empty. Add a few favorites to get started.</p>
+			<ul class="cart-list" id="cartList"></ul>
+			<button class="btn btn-primary" type="button" style="width:100%;">Checkout</button>
+		</section>
+	</main>
+
+	<footer>
+		Thoughtful commerce for everyday routines.
+	</footer>
+
+	<script>
+		const products = [
+			{ id: 1, name: "Bamboo Cutlery Set", category: "Kitchen", price: 18.99, swatch: "linear-gradient(135deg,#f4e7cc,#cbb58d)" },
+			{ id: 2, name: "Refillable Glass Soap Bottle", category: "Bath", price: 14.5, swatch: "linear-gradient(135deg,#f4f6e8,#b5d4a8)" },
+			{ id: 3, name: "Organic Cotton Throw", category: "Home", price: 36.0, swatch: "linear-gradient(135deg,#f5dfcb,#e7b88e)" },
+			{ id: 4, name: "Compost Bin Caddy", category: "Kitchen", price: 29.0, swatch: "linear-gradient(135deg,#d9ead8,#8eb58c)" },
+			{ id: 5, name: "Natural Loofah Pack", category: "Bath", price: 11.75, swatch: "linear-gradient(135deg,#f7e8c6,#e0c898)" },
+			{ id: 6, name: "Linen Storage Basket", category: "Home", price: 25.4, swatch: "linear-gradient(135deg,#ece7dc,#cbc2af)" },
+			{ id: 7, name: "Plant Wax Candle", category: "Home", price: 19.2, swatch: "linear-gradient(135deg,#f4eedf,#d4d2c7)" },
+			{ id: 8, name: "Silicone Reusable Bags", category: "Kitchen", price: 16.3, swatch: "linear-gradient(135deg,#e3f0ec,#a6cbb6)" }
+		];
+
+		let activeCategory = "All";
+		const cart = [];
+
+		const filtersNode = document.getElementById("filters");
+		const productsNode = document.getElementById("products");
+		const cartListNode = document.getElementById("cartList");
+		const cartCountNode = document.getElementById("cartCount");
+		const cartTotalNode = document.getElementById("cartTotal");
+		const emptyStateNode = document.getElementById("emptyState");
+
+		const categories = ["All", ...new Set(products.map((product) => product.category))];
+
+		function scrollToShop() {
+			document.getElementById("shop").scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+
+		function renderFilters() {
+			filtersNode.innerHTML = "";
+			categories.forEach((category) => {
+				const button = document.createElement("button");
+				button.type = "button";
+				button.className = `filter-btn ${activeCategory === category ? "active" : ""}`;
+				button.textContent = category;
+				button.addEventListener("click", () => {
+					activeCategory = category;
+					renderFilters();
+					renderProducts();
+				});
+				filtersNode.appendChild(button);
+			});
+		}
+
+		function renderProducts() {
+			const visibleProducts = activeCategory === "All"
+				? products
+				: products.filter((product) => product.category === activeCategory);
+
+			productsNode.innerHTML = "";
+			visibleProducts.forEach((product, index) => {
+				const card = document.createElement("article");
+				card.className = "product-card";
+				card.style.animationDelay = `${index * 70}ms`;
+				card.innerHTML = `
+					<div class="swatch" style="--swatch:${product.swatch}"></div>
+					<p class="meta">${product.category}</p>
+					<h3>${product.name}</h3>
+					<div class="price-row">
+						<span class="price">$${product.price.toFixed(2)}</span>
+						<button type="button" class="add-btn" data-product="${product.id}">Add +</button>
+					</div>
+				`;
+				productsNode.appendChild(card);
+			});
+
+			document.querySelectorAll(".add-btn").forEach((button) => {
+				button.addEventListener("click", () => {
+					addToCart(Number(button.getAttribute("data-product")));
+				});
+			});
+		}
+
+		function addToCart(productId) {
+			const item = products.find((product) => product.id === productId);
+			if (!item) {
+				return;
+			}
+
+			const existing = cart.find((cartItem) => cartItem.id === productId);
+			if (existing) {
+				existing.quantity += 1;
+			} else {
+				cart.push({ ...item, quantity: 1 });
+			}
+
+			renderCart();
+		}
+
+		function renderCart() {
+			cartListNode.innerHTML = "";
+
+			if (!cart.length) {
+				emptyStateNode.style.display = "block";
+			} else {
+				emptyStateNode.style.display = "none";
+			}
+
+			cart.forEach((item) => {
+				const row = document.createElement("li");
+				row.className = "cart-item";
+				row.innerHTML = `
+					<span>${item.name} x${item.quantity}</span>
+					<strong>$${(item.price * item.quantity).toFixed(2)}</strong>
+				`;
+				cartListNode.appendChild(row);
+			});
+
+			const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+			const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+			cartCountNode.textContent = `${totalCount} ${totalCount === 1 ? "item" : "items"}`;
+			cartTotalNode.textContent = `$${totalPrice.toFixed(2)}`;
+		}
+
+		renderFilters();
+		renderProducts();
+		renderCart();
+	</script>
+</body>
+</html>
