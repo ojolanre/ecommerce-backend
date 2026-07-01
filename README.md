@@ -1,2 +1,2 @@
 # ecommerce-backend
-Backend section of an ecommerce site
+Focuses mainly on the backend section of an ecommerce site
