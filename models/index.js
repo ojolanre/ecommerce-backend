@@ -7,7 +7,14 @@ const sequelize = new Sequelize(
     CONFIG.DB_PASSWORD, 
 {
   host: CONFIG.DB_HOST,
-  dialect: CONFIG.DB_DIALECT
+  port: CONFIG.DB_PORT ,
+  dialect: CONFIG.DB_DIALECT,
+          dialectOptions: {
+            ssl: {
+                rejectUnauthorized: false // Required for Aiven/Render connections
+            }
+        },
+        logging: false
 });
 
 
