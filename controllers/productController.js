@@ -5,7 +5,12 @@ const Category = db.categories;
 
 exports.getProducts = async (req, res) => {
     try {
-        const products = await Product.findAll({ include: Category });
+        const products = await Product.findAll({ 
+                include: [{
+                model: Category,
+                required: false 
+            }] 
+        });
 
         const role = req.user?.role || 'guest'; 
         if (role === 'admin') {
